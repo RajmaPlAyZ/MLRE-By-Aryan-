@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { Brain, Zap, Server, BarChart3, ChevronRight, Calculator, Cpu, ShieldCheck, Clock, Settings2 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 export default async function LandingPage() {
   const { userId } = await auth();
@@ -15,33 +16,7 @@ export default async function LandingPage() {
       <div className="fixed inset-0 z-0 pointer-events-none bg-grid-pattern"></div>
       
       {/* Navigation */}
-      <nav className="flex items-center justify-between border-b border-[#E3FF00]/10 bg-[#060A06]/80 px-6 py-4 backdrop-blur-xl sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white overflow-hidden shadow-lg shadow-[#E3FF00]/30 ring-2 ring-[#E3FF00]/50 transition hover:scale-105">
-            <Image src="/logo-v2.png" alt="MLRE Logo" width={48} height={48} className="object-contain" />
-          </div>
-          <div className="flex flex-col justify-center">
-            <span className="text-2xl font-black tracking-tight uppercase leading-none">
-              MLRE <span className="text-[#E3FF00] text-sm">By Aryan</span>
-            </span>
-            <span className="text-[10px] text-emerald-100/60 uppercase font-bold tracking-widest mt-1">
-              Machine Learning Resource Estimator
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          {userId ? (
-            <Link href="/dashboard" className="rounded-xl bg-[#E3FF00] px-5 py-2.5 text-sm font-bold text-black shadow-lg shadow-[#E3FF00]/20 transition hover:brightness-110">
-              Go to Dashboard
-            </Link>
-          ) : (
-            <>
-              <SignInButton mode="modal" children={<button className="text-sm font-bold text-slate-300 hover:text-white transition">Log in</button>} />
-              <SignUpButton mode="modal" children={<button className="rounded-xl bg-[#E3FF00] px-5 py-2.5 text-sm font-bold text-black shadow-lg shadow-[#E3FF00]/25 transition hover:brightness-110 hover:shadow-[#E3FF00]/40">Get Started</button>} />
-            </>
-          )}
-        </div>
-      </nav>
+      <Navbar userId={userId} />
 
       {/* Hero Section */}
       <main className="relative flex flex-col items-center justify-center px-4 pt-32 pb-24 text-center overflow-hidden">
@@ -202,21 +177,21 @@ export default async function LandingPage() {
                   <span className="text-white font-mono">14.9 GB</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-emerald-100/60">Optimizer States (Adam)</span>
-                  <span className="text-white font-mono">29.8 GB</span>
+                  <span className="text-emerald-100/60">Optimizer States (AdamW)</span>
+                  <span className="text-white font-mono">89.4 GB</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-emerald-100/60">Gradients (FP16)</span>
                   <span className="text-white font-mono">14.9 GB</span>
                 </div>
                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden flex mt-2">
-                  <div className="w-[25%] bg-[#E3FF00]"></div>
-                  <div className="w-[50%] bg-emerald-500"></div>
-                  <div className="w-[25%] bg-blue-500"></div>
+                  <div className="w-[12%] bg-[#E3FF00]"></div>
+                  <div className="w-[75%] bg-emerald-500"></div>
+                  <div className="w-[13%] bg-blue-500"></div>
                 </div>
                 <div className="pt-4 border-t border-white/5 flex justify-between items-center">
                   <span className="text-white font-bold">Total VRAM Required</span>
-                  <span className="text-[#E3FF00] font-black font-mono text-lg">59.6 GB</span>
+                  <span className="text-[#E3FF00] font-black font-mono text-lg">119.2 GB</span>
                 </div>
               </div>
             </div>

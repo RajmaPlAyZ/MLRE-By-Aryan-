@@ -146,11 +146,11 @@ export default function ComparisonTable() {
 
   return (
     <div className="rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 mb-4">
+        <h3 className="text-sm font-semibold text-white shrink-0">
           Configuration Comparison
         </h3>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto sm:justify-end">
           <button
             onClick={handleAddComparison}
             disabled={!result || loading}
@@ -196,16 +196,16 @@ export default function ComparisonTable() {
       ) : (
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full text-left text-xs">
-            <thead>
-              <tr className="border-b border-white/5">
+            <thead className="bg-[#0A1108]/80 backdrop-blur-sm sticky top-0 z-10">
+              <tr className="border-b border-white/10">
                 {[
-                  'Configuration Name',
-                  'Model / Params',
-                  'Context Length',
-                  'Batch Size',
+                  'Config Name',
+                  'Model & Params',
+                  'Context',
+                  'Batch',
                   'VRAM Usage',
-                  'Est. Training Time',
-                  'Tokens / Sec (Inf)',
+                  'Training Time',
+                  'Inference Speed',
                   'Feasibility',
                   'Actions',
                 ].map((h) => (
@@ -244,38 +244,41 @@ export default function ComparisonTable() {
                       </span>
                     </td>
                     <td className="px-3 py-3 text-slate-300 whitespace-nowrap">
-                      {entry.modelConfig.modelName || 'Custom'}{' '}
-                      {formatNumber(entry.modelConfig.parameters)}
+                      <div className="flex flex-col">
+                        <span className="font-semibold">{entry.modelConfig.modelName || 'Custom'}</span>
+                        <span className="text-[10px] text-slate-500">{formatNumber(entry.modelConfig.parameters)} params</span>
+                      </div>
                     </td>
-                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap">
-                      {entry.modelConfig.contextLength}
+                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap font-mono text-xs">
+                      {entry.modelConfig.contextLength.toLocaleString()}
                     </td>
-                    <td className="px-3 py-3 text-slate-300">
+                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap font-mono text-xs">
                       {entry.trainingConfig.batchSize}
                     </td>
                     <td className="px-3 py-3 whitespace-nowrap">
-                      <span className="text-slate-300">
-                        {entry.result.peakVram.toFixed(1)} GB / {entry.hardwareConfig.gpuVram} GB
-                      </span>
-                      <br />
-                      <span className={`text-[11px] font-medium ${vramColor}`}>
-                        {vramPct.toFixed(0)}%
-                      </span>
+                      <div className="flex flex-col">
+                        <span className={`font-bold font-mono ${vramColor}`}>
+                          {entry.result.peakVram.toFixed(1)} GB
+                        </span>
+                        <span className="text-[10px] text-slate-500">
+                          {entry.result.feasibilityPercent.toFixed(1)}% of GPU
+                        </span>
+                      </div>
                     </td>
-                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap">
+                    <td className="px-3 py-3 text-slate-300 whitespace-nowrap font-mono text-xs">
                       {formatTime(entry.result.trainingTimeSeconds)}
                     </td>
-                    <td className="px-3 py-3 text-slate-300">
-                      {entry.result.tokensPerSec.toFixed(1)}
+                    <td className="px-3 py-3 text-emerald-400 whitespace-nowrap font-mono text-xs font-bold">
+                      {entry.result.tokensPerSec.toFixed(1)} t/s
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-3 whitespace-nowrap">
                       <FeasibilityBadge status={entry.result.feasibility} />
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-3 whitespace-nowrap">
                       <button
                         onClick={() => handleRemoveComparison(entry.id)}
-                        className="rounded-lg p-1.5 text-slate-500 transition-colors
-                                   hover:bg-red-500/10 hover:text-red-400"
+                        className="rounded-lg p-1.5 text-slate-500 transition hover:bg-red-500/10 hover:text-red-400"
+                        title="Delete"
                       >
                         <Trash2 size={14} />
                       </button>

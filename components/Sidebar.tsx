@@ -271,21 +271,35 @@ export default function Sidebar() {
       {/* ── Mobile hamburger button (shown on < lg) ── */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-black/90 border border-blue-500/20 text-blue-400 shadow-lg backdrop-blur-sm lg:hidden"
+        className={`fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-[#060A06]/90 border border-[#E3FF00]/20 text-[#E3FF00] shadow-[0_0_15px_rgba(227,255,0,0.1)] backdrop-blur-sm lg:hidden transition-all duration-300 ease-out ${
+          mobileOpen ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100 hover:scale-105'
+        }`}
         aria-label="Open configuration sidebar"
       >
         <Menu size={20} />
       </button>
 
       {/* ── Mobile overlay ── */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setMobileOpen(false)}>
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-          <div className="relative h-full flex" onClick={(e) => e.stopPropagation()}>
-            {configPanel}
-          </div>
+      <div 
+        className={`fixed inset-0 z-40 lg:hidden transition-all duration-300 ${
+          mobileOpen ? 'visible' : 'invisible'
+        }`} 
+        onClick={() => setMobileOpen(false)}
+      >
+        <div 
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+            mobileOpen ? 'opacity-100' : 'opacity-0'
+          }`} 
+        />
+        <div 
+          className={`relative h-full flex transition-transform duration-300 ease-out ${
+            mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          }`} 
+          onClick={(e) => e.stopPropagation()}
+        >
+          {configPanel}
         </div>
-      )}
+      </div>
 
       {/* ── Desktop sidebar (hidden on < lg) ── */}
       <div className="hidden lg:flex h-screen">
